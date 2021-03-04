@@ -17,14 +17,6 @@ require 'pry'
 # Roman Numeral   I V X   L   C   D   M
 # Arabic Numeral	1	5	10	50	100	500	1,000
 
-# KEY_romAN_numBERS = %w{I V X   L   C   D   M}
-# => ["I", "V", "X", "L", "C", "D", "M"]
-# CORRESPONDING_ARABIC_NUMBERS = %w{ 1       5       10      50      100     500     1000 }
-# => ["1", "5", "10", "50", "100", "500", "1000"]
-# rom_to_arb = KEY_romAN_numBERS.zip CORRESPONDING_ARABIC_NUMBERS
-# => [["I", "1"], ["V", "5"], ["X", "10"], ["L", "50"], ["C", "100"], ["D", "500"], ["M", "1000"]]
-# going from small to big => subtract
-# going grom big to small => add
 class RomanNumerals
   CORRESPONDING_ARABIC_NUMBERS = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
   KEY_ROMAN_NUMBERS = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
@@ -60,5 +52,47 @@ class RomanNumerals
       end
       answer
     end
+  end
+end
+
+
+class RomanNumerals_recommended_solution_in_codewars_but_fails
+  FROM_ROMAN = {
+    'M'  => 1000,
+    'CM' => 900,
+    'D'  => 500,
+    'C'  => 100,
+    'CD' => 400,
+    'XC' => 90,
+    'L'  => 50,
+    'XL' => 40,
+    'X'  => 10,
+    'IX' => 9,
+    'V'  => 5,
+    'IV' => 4,
+    'I'  => 1
+  }
+  
+  TO_ROMAN = FROM_ROMAN.invert
+  
+  def self.to_roman number
+    result = ''
+    while number > 0
+      mapping = TO_ROMAN.detect { |k,v| k <= number }
+      number -= mapping.first
+      result += mapping.last
+    end
+    
+    result
+  end
+  
+  def self.from_roman string
+    result = 0
+    while string.length > 0
+      mapping = FROM_ROMAN.detect { |k,v| string.gsub! /^#{k}/, '' }
+      result += mapping.last
+    end
+    
+    result
   end
 end
